@@ -16,7 +16,27 @@ python-functions-lists-assessment/
 │
 ├── result_card_generator.py
 ├── class_marks_analyzer.py
-└── README.md
+├── README.md
+├── package.json
+│
+├── diagrams/
+│   ├── result_card_generator.mmd
+│   ├── result_card_generator.svg
+│   ├── result_card_generator.png
+│   ├── class_marks_analyzer.mmd
+│   ├── class_marks_analyzer.svg
+│   ├── class_marks_analyzer.png
+│   └── index.html
+│
+├── animations/
+│   ├── index.html
+│   ├── walkthrough.css
+│   ├── walkthrough.js
+│   └── data.js
+│
+└── scripts/
+    ├── serve-diagrams.mjs
+    └── serve-animations.mjs
 ```
 
 ---
@@ -32,11 +52,11 @@ subjects: Mathematics, English, Physics, Chemistry, and Computer Science.
 
 - Cleans the student's name with `.strip()` and `.title()`.
 - Validates the roll number with `.isdigit()` so it can contain digits only.
-- Validates every subject mark and only accepts values from 0 to 100.
+- Validates every subject mark and only accepts whole numbers from 0 to 100.
 - Calculates total marks and overall percentage.
 - Calculates the letter grade using the assessment grading table.
-- Forces a **Fail** result if any subject mark is below 40, even when the
-  overall percentage is high enough to pass.
+- Forces both the grade and final result to **Fail** if any subject mark is
+  below 40, even when the overall percentage is high enough to pass.
 - Displays a formatted result card using f-strings.
 
 ### Grading Criteria
@@ -55,14 +75,10 @@ subjects: Mathematics, English, Physics, Chemistry, and Computer Science.
 | Function | Purpose |
 | --- | --- |
 | `format_name(name)` | Cleans the name with `.strip()` and `.title()`. |
-| `get_student_name()` | Reads and validates a non-empty student name. |
-| `get_roll_number()` | Reads a roll number and validates it with `.isdigit()`. |
 | `get_valid_marks(subject)` | Reads and validates marks between 0 and 100. |
 | `calculate_percentage(total, max_total)` | Calculates the overall percentage. |
 | `get_grade(percentage)` | Returns the letter grade for a percentage. |
-| `find_failed_subjects(subjects, marks)` | Finds subjects with marks below 40. |
-| `determine_final_status(percentage, failed_subjects)` | Decides the final Pass/Fail status. |
-| `print_result_card(...)` | Prints the formatted result card. |
+| `main()` | Collects the inputs, applies the final result rule, and prints the card. |
 
 ---
 
@@ -89,15 +105,68 @@ student's name and marks. Names and marks are stored in two parallel lists:
 
 | Function | Purpose |
 | --- | --- |
-| `get_student_count()` | Reads and validates the number of students. |
-| `get_student_name(position)` | Reads and validates a student name. |
 | `get_valid_mark(student_name)` | Reads and validates a mark from 0 to 100. |
-| `calculate_average(marks)` | Returns the class average. |
-| `find_students_with_mark(names, marks, target_mark)` | Finds all students with a given mark. |
-| `count_pass_fail(marks)` | Counts passing and failing students. |
-| `get_above_average_students(names, marks, average)` | Finds students above the class average. |
-| `sort_students_by_mark(names, marks)` | Sorts students from highest to lowest marks. |
-| `display_report(names, marks)` | Prints the complete class report. |
+| `display_report(names, marks)` | Calculates the statistics and prints the class report. |
+| `main()` | Collects the class size, names, and marks into two parallel lists. |
+
+---
+
+## Architecture Diagrams
+
+The `diagrams/` folder contains editable Mermaid sources and rendered diagrams
+for both programs. Each diagram maps the entry point, validation loops,
+calculation steps, function inputs and return values, and the final output.
+
+### Result Card Generator
+
+[![Result card generator architecture](diagrams/result_card_generator.svg)](diagrams/result_card_generator.svg)
+
+### Class Marks Analyzer
+
+[![Class marks analyzer architecture](diagrams/class_marks_analyzer.svg)](diagrams/class_marks_analyzer.svg)
+
+Mermaid is installed locally in this repository, so the diagrams do not depend
+on a CDN or an internet connection.
+
+```bash
+npm install          # install Mermaid and the diagram tools
+npm run diagrams     # regenerate SVG and PNG files from the .mmd sources
+npm run diagrams:preview
+```
+
+`npm run diagrams:preview` starts a local web server at
+`http://localhost:8080/diagrams/`, where both diagrams are rendered in the
+browser using the Mermaid JavaScript API.
+
+---
+
+## Interactive Code Walkthrough
+
+The `animations/` folder contains a browser-based, step-by-step animation of
+both programs. It uses only plain HTML, CSS, and JavaScript - no animation
+library and no runtime dependency.
+
+Open `animations/index.html` directly in a browser, or start the preview server:
+
+```bash
+npm run animations:preview
+```
+
+Then visit `http://localhost:8081/animations/`.
+
+For every step, the walkthrough shows:
+
+- the exact source lines being executed, highlighted in the code panel;
+- the focused function, its signature, and its docstring;
+- the call stack as functions are entered and exited;
+- the variables that change, with new and updated values marked;
+- the simulated terminal input and output.
+
+Use the Prev / Next buttons, the scrubber, or the keyboard shortcuts
+(<kbd>Space</kbd> = play/pause, <kbd>Left</kbd>/<kbd>Right</kbd> = step,
+<kbd>R</kbd> = restart). The speed selector controls autoplay. The scenario used
+by the animation is listed above the panels so the values on screen can be
+checked against a real run.
 
 ---
 
@@ -110,20 +179,24 @@ student's name and marks. Names and marks are stored in two parallel lists:
 - `while` loops for repeated input validation.
 - `for` loops for collecting subjects and displaying lists.
 - Lists: creating lists, `.append()`, `len()`, `sum()`, `max()`, `min()`, and `sorted()`.
-- Exception handling with `try` / `except ValueError` for numeric input.
-- Parallel lists, list comprehensions, `zip()`, and `enumerate()`.
+- Exception handling with `try` / `except` for clean program cancellation.
+- Parallel lists, `zip()`, `enumerate()`, and `lambda` for sorting.
 
 ---
 
 ## Requirements
 
 - Python 3.8 or newer.
-- No external libraries are required.
+- Python programs: no external libraries are required.
+- Walkthrough: any modern browser; no extra libraries are required.
+- Diagram tooling: Node.js 20 or newer and npm.
 
-Check the installed version with:
+Check the installed versions with:
 
 ```bash
 python --version
+node --version
+npm --version
 ```
 
 ---
@@ -156,7 +229,7 @@ On systems where `python` is not available, try `python3` instead.
 
 ```text
 Enter student name:   aYESHA khan
-Enter roll number (digits only): 12345
+Enter roll number: 12345
 Enter marks for Mathematics (0-100): 95
 Enter marks for English (0-100): 88
 Enter marks for Physics (0-100): 92
@@ -167,41 +240,40 @@ Enter marks for Computer Science (0-100): 85
 **Output:**
 
 ```text
-====================================================
-STUDENT RESULT CARD GENERATOR
-====================================================
-Enter student name: Enter roll number (digits only): Enter marks for Mathematics (0-100): Enter marks for English (0-100): Enter marks for Physics (0-100): Enter marks for Chemistry (0-100): Enter marks for Computer Science (0-100):
-====================================================
-                STUDENT RESULT CARD
-====================================================
+===== Student Result Card Generator =====
+Enter student name: Enter roll number: Enter marks for Mathematics (0-100): Enter marks for English (0-100): Enter marks for Physics (0-100): Enter marks for Chemistry (0-100): Enter marks for Computer Science (0-100):
+
+==================================================
+               STUDENT RESULT CARD
+==================================================
 Student Name : Ayesha Khan
 Roll Number  : 12345
-----------------------------------------------------
-Subject                          Marks        Status
-----------------------------------------------------
-Mathematics                         95          Pass
-English                             88          Pass
-Physics                             92          Pass
-Chemistry                           90          Pass
-Computer Science                    85          Pass
-----------------------------------------------------
-Total Obtained Marks               450 / 500
-Overall Percentage               90.00%
-Letter Grade                        A+
-Final Status                      PASS
-====================================================
+--------------------------------------------------
+Subject                       Marks
+--------------------------------------------------
+Mathematics                      95
+English                          88
+Physics                          92
+Chemistry                        90
+Computer Science                 85
+--------------------------------------------------
+Total Marks  : 450/500
+Percentage   : 90.00%
+Grade        : A+
+Result       : Pass
+==================================================
 ```
 
 ### Sample 2: Subject Below 40 Forces a Fail
 
-This student has an overall percentage of 80.00% (grade A), but Chemistry is
-below 40, so the final result must be Fail.
+This student has an overall percentage of 80.00%, but Chemistry is below 40, so
+both the grade and the final result must be Fail.
 
 **Input:**
 
 ```text
 Enter student name: Hassan Ali
-Enter roll number (digits only): 21
+Enter roll number: 21
 Enter marks for Mathematics (0-100): 95
 Enter marks for English (0-100): 92
 Enter marks for Physics (0-100): 88
@@ -212,15 +284,13 @@ Enter marks for Computer Science (0-100): 90
 **Output:**
 
 ```text
-----------------------------------------------------
-Total Obtained Marks               400 / 500
-Overall Percentage               80.00%
-Letter Grade                         A
-Final Status                      FAIL
-----------------------------------------------------
-Result failed: the following subject(s) are below 40 marks:
-  - Chemistry
-====================================================
+--------------------------------------------------
+Total Marks  : 400/500
+Percentage   : 80.00%
+Grade        : Fail
+Result       : Fail
+Failed Subject(s): Chemistry
+==================================================
 ```
 
 ### Sample 3: Class Marks Analyzer
@@ -242,9 +312,9 @@ Enter marks for Cara (0-100): 40
 **Output:**
 
 ```text
-==========================================================
-               CLASS MARKS ANALYZER REPORT
-==========================================================
+=======================================================
+              CLASS MARKS ANALYZER REPORT
+=======================================================
 Total students     : 4
 Class average      : 73.75
 Highest marks      : 90
@@ -253,18 +323,18 @@ Lowest marks       : 40
 Lowest scorer(s)   : Cara
 Passing students   : 3
 Failing students   : 1
-----------------------------------------------------------
+-------------------------------------------------------
 Students who scored above the class average:
   - Ali: 90
   - Sara: 75
   - Bob: 90
-----------------------------------------------------------
+-------------------------------------------------------
 Students sorted by marks (highest to lowest):
-  1. Ali                           90
-  2. Bob                           90
-  3. Sara                          75
-  4. Cara                          40
-==========================================================
+  1. Ali                        90
+  2. Bob                        90
+  3. Sara                       75
+  4. Cara                       40
+=======================================================
 ```
 
 ---
@@ -280,7 +350,7 @@ Both programs were tested with normal, boundary, and invalid inputs:
 | Roll number containing letters (`12a`) | Re-asks for input | Passed |
 | Non-numeric marks (`abc`) | Re-asks for input | Passed |
 | Marks below 0 or above 100 | Re-asks for input | Passed |
-| Decimal marks (for example `49.5`) | Accepted and calculated correctly | Passed |
+| Decimal marks (for example `49.5`) | Rejected because marks must be whole numbers | Passed |
 | One subject below 40 but high percentage | Final status is Fail | Passed |
 | Percentage exactly 50 | Grade D and Pass | Passed |
 | Percentage exactly 90 | Grade A+ | Passed |
