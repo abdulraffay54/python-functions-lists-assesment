@@ -1,0 +1,33 @@
+{
+  "name": "python-functions-lists-assesment",
+  "version": "1.0.0",
+  "description": "Python functions and lists assessment with Mermaid architecture diagrams.",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "diagrams": "npm run diagrams:result && npm run diagrams:class",
+    "diagrams:result": "mmdc -i diagrams/result_card_generator.mmd -o diagrams/result_card_generator.svg -b white && mmdc -i diagrams/result_card_generator.mmd -o diagrams/result_card_generator.png -b white --size 1800",
+    "diagrams:class": "mmdc -i diagrams/class_marks_analyzer.mmd -o diagrams/class_marks_analyzer.svg -b white && mmdc -i diagrams/class_marks_analyzer.mmd -o diagrams/class_marks_analyzer.png -b white --size 1800",
+    "diagrams:preview": "node scripts/serve-diagrams.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulraffay54/python-functions-lists-assesment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abdulraffay54/python-functions-lists-assesment/issues"
+  },
+  "homepage": "https://github.com/abdulraffay54/python-functions-lists-assesment#readme",
+  "dependencies": {
+    "mermaid": "^12.3.0"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^12.2.0"
+  }
+}
