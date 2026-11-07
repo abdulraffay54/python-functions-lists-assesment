@@ -1,0 +1,60 @@
+flowchart TD
+    START(["Start<br/>python class_marks_analyzer.py"]) --> MAIN["main()"]
+
+    CONFIG["Global<br/>PASS_MARK = 50"]
+
+    subgraph INPUT["Input, validation and collection"]
+        direction TB
+        COUNT["Read class size<br/>.isdigit() and greater than 0"]
+        NAME["Read student name<br/>.strip().title()"]
+        MARK["get_valid_mark(student_name)<br/>whole numbers 0-100"]
+        LISTS["student_names[]<br/>student_marks[]"]
+    end
+
+    subgraph REPORT["display_report(names, marks)"]
+        direction TB
+        AVG["average = sum(marks) / len(marks)"]
+        EXTREMES["highest = max(marks)<br/>lowest = min(marks)"]
+        LOOP["Loop through marks<br/>find highest and lowest scorers<br/>count pass and fail<br/>collect above-average students"]
+        SORT["sorted(zip(names, marks))<br/>highest to lowest"]
+        PRINT["Print class report"]
+    end
+
+    CANCEL["print<br/>Program cancelled"]
+
+    CONFIG -.->|"pass threshold 50"| LOOP
+
+    MAIN -->|"ask for class size"| COUNT
+    COUNT -->|"invalid: retry"| COUNT
+    COUNT -->|"student_count"| MAIN
+
+    MAIN -->|"initialize empty parallel lists"| LISTS
+    LISTS -->|"ready for collection"| MAIN
+
+    MAIN -->|"for position in 1..student_count"| NAME
+    NAME -->|"empty name: retry"| NAME
+    NAME -->|"cleaned name"| MAIN
+
+    MAIN -->|"student_name"| MARK
+    MARK -->|"invalid input or outside 0-100: retry"| MARK
+    MARK -->|"valid mark"| MAIN
+
+    MAIN -->|"append name and mark at the same index"| LISTS
+    LISTS -->|"student_names, student_marks"| MAIN
+
+    MAIN -->|"student_names, student_marks"| REPORT
+
+    REPORT -->|"marks"| AVG
+    AVG -->|"average"| LOOP
+
+    REPORT -->|"marks"| EXTREMES
+    EXTREMES -->|"highest, lowest"| LOOP
+
+    LOOP -->|"highest_students, lowest_students,<br/>passing, failing, above_average"| PRINT
+
+    REPORT -->|"names, marks"| SORT
+    SORT -->|"sorted_students"| PRINT
+
+    PRINT -->|"report text"| REPORT
+
+    MAIN -.->|"EOFError or KeyboardInterrupt"| CANCEL

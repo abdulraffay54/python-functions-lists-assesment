@@ -1,0 +1,57 @@
+flowchart TD
+    START(["Start<br/>python result_card_generator.py"]) --> MAIN["main()"]
+
+    CONFIG["Globals<br/>SUBJECTS = 5 subjects<br/>MAX_MARK_PER_SUBJECT = 100<br/>SUBJECT_PASS_MARK = 40<br/>OVERALL_PASS_PERCENTAGE = 50"]
+
+    subgraph INPUT["Input and validation"]
+        direction TB
+        NAME["Read student name"]
+        FORMAT["format_name(name)<br/>.strip().title()"]
+        ROLL["Read roll number<br/>.isdigit() check"]
+        MARKS["get_valid_marks(subject)<br/>whole numbers 0-100"]
+    end
+
+    subgraph CALC["Calculation and decision logic"]
+        direction TB
+        PERCENT["calculate_percentage(total_marks, max_total)"]
+        GRADE["get_grade(percentage)"]
+        RULE{"failed subject?<br/>or percentage below 50?"}
+    end
+
+    subgraph OUTPUT["Presentation"]
+        CARD["Print result card<br/>subject marks, total, percentage,<br/>grade and final result"]
+    end
+
+    CANCEL["print<br/>Program cancelled"]
+
+    CONFIG -.->|"subject list and pass mark"| MARKS
+    CONFIG -.->|"max_total"| PERCENT
+    CONFIG -.->|"overall pass percentage"| RULE
+
+    MAIN -->|"raw name"| NAME
+    NAME -->|"raw name"| FORMAT
+    FORMAT -->|"cleaned_name"| NAME
+    NAME -->|"empty name: ask again"| NAME
+    NAME -->|"valid name"| MAIN
+
+    MAIN -->|"ask for roll number"| ROLL
+    ROLL -->|"not digits: retry"| ROLL
+    ROLL -->|"digits-only roll_number"| MAIN
+
+    MAIN -->|"for subject in SUBJECTS"| MARKS
+    MARKS -->|"invalid input or outside 0-100: retry"| MARKS
+    MARKS -->|"valid mark added to marks[]"| MAIN
+
+    MAIN -->|"total_marks, max_total = 500"| PERCENT
+    PERCENT -->|"percentage"| MAIN
+
+    MAIN -->|"percentage"| GRADE
+    GRADE -->|"letter grade"| MAIN
+
+    MAIN -->|"failed_subjects, percentage"| RULE
+    RULE -->|"yes: grade = Fail, result = Fail"| CARD
+    RULE -->|"no: result = Pass"| CARD
+
+    MAIN -->|"name, roll_number, SUBJECTS, marks,<br/>total_marks, percentage, grade, result"| CARD
+
+    MAIN -.->|"EOFError or KeyboardInterrupt"| CANCEL

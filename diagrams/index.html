@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Python Assessment - Mermaid Architecture Diagrams</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172033;
+      --muted: #5d687a;
+      --line: #d7deea;
+      --panel: #ffffff;
+      --page: #eef2f8;
+      --accent: #1f6feb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 2rem 1.25rem 1.5rem;
+      background: #12233f;
+      color: #ffffff;
+    }
+
+    header .inner,
+    main {
+      width: min(1400px, 100%);
+      margin: 0 auto;
+    }
+
+    header h1 {
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+    }
+
+    header p {
+      margin: 0;
+      color: #c9d7ee;
+    }
+
+    header a {
+      color: #9fd0ff;
+    }
+
+    main {
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    .diagram-card {
+      margin-bottom: 1.75rem;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(23, 32, 51, 0.08);
+    }
+
+    .diagram-card .heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .diagram-card h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .links {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .canvas {
+      min-height: 220px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .canvas svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .status {
+      padding: 2rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .status.error {
+      color: #b42318;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <h1>Python Assessment Architecture</h1>
+      <p>Function maps generated from the local Mermaid JavaScript library. <a href="../animations/index.html">Interactive code walkthrough &rarr;</a></p>
+    </div>
+  </header>
+
+  <main>
+    <section class="diagram-card">
+      <div class="heading">
+        <h2>result_card_generator.py</h2>
+        <div class="links">
+          <a href="result_card_generator.mmd">View source</a>
+          <a href="result_card_generator.svg">Open SVG</a>
+        </div>
+      </div>
+      <div class="canvas" id="result-card-diagram">
+        <p class="status">Loading diagram...</p>
+      </div>
+    </section>
+
+    <section class="diagram-card">
+      <div class="heading">
+        <h2>class_marks_analyzer.py</h2>
+        <div class="links">
+          <a href="class_marks_analyzer.mmd">View source</a>
+          <a href="class_marks_analyzer.svg">Open SVG</a>
+        </div>
+      </div>
+      <div class="canvas" id="class-marks-diagram">
+        <p class="status">Loading diagram...</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import mermaid from "../node_modules/mermaid/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "default",
+      securityLevel: "strict",
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      flowchart: {
+        htmlLabels: true,
+        curve: "basis",
+        nodeSpacing: 35,
+        rankSpacing: 55
+      }
+    });
+
+    const diagrams = [
+      { container: "result-card-diagram", source: "result_card_generator.mmd" },
+      { container: "class-marks-diagram", source: "class_marks_analyzer.mmd" }
+    ];
+
+    for (const [index, diagram] of diagrams.entries()) {
+      const container = document.getElementById(diagram.container);
+
+      try {
+        const response = await fetch(diagram.source);
+
+        if (!response.ok) {
+          throw new Error(`Could not load ${diagram.source}: ${response.status}`);
+        }
+
+        const source = await response.text();
+        const { svg } = await mermaid.render(`mermaid-diagram-${index}`, source);
+        container.innerHTML = svg;
+      } catch (error) {
+        container.innerHTML = `<p class="status error">${error.message}</p>`;
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
