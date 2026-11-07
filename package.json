@@ -10,7 +10,8 @@
     "diagrams": "npm run diagrams:result && npm run diagrams:class",
     "diagrams:result": "mmdc -i diagrams/result_card_generator.mmd -o diagrams/result_card_generator.svg -b white && mmdc -i diagrams/result_card_generator.mmd -o diagrams/result_card_generator.png -b white --size 1800",
     "diagrams:class": "mmdc -i diagrams/class_marks_analyzer.mmd -o diagrams/class_marks_analyzer.svg -b white && mmdc -i diagrams/class_marks_analyzer.mmd -o diagrams/class_marks_analyzer.png -b white --size 1800",
-    "diagrams:preview": "node scripts/serve-diagrams.mjs"
+    "diagrams:preview": "node scripts/serve-diagrams.mjs",
+    "animations:preview": "node scripts/serve-animations.mjs"
   },
   "repository": {
     "type": "git",

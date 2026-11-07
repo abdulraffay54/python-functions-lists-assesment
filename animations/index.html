@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Python Code Walkthrough</title>
+  <link rel="stylesheet" href="walkthrough.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">&gt;_</span>
+        <div>
+          <h1>Python Code Walkthrough</h1>
+          <p>Step through the code, see which function runs, and watch the data change.</p>
+        </div>
+      </div>
+
+      <nav class="tabs" aria-label="Choose a program">
+        <button class="tab is-active" type="button" data-program="result">result_card_generator.py</button>
+        <button class="tab" type="button" data-program="classMarks">class_marks_analyzer.py</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="runline" aria-label="Scenario">
+      <span class="run-dot" aria-hidden="true"></span>
+      <span class="run-label">Scenario</span>
+      <span class="run-scenario" id="scenario"></span>
+      <span class="run-summary" id="summary"></span>
+      <a class="run-link" href="../diagrams/index.html">Architecture diagrams &rarr;</a>
+    </section>
+
+    <section class="panel code-panel" aria-label="Annotated source code">
+      <div class="panel-head">
+        <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="file-name" id="file-name"></span>
+        <span class="focus-badge" id="focus-badge"></span>
+      </div>
+
+      <div class="function-map" id="function-map" aria-label="Functions in this file"></div>
+      <div class="fn-help" id="fn-help"></div>
+
+      <div class="code-scroll" id="code-scroll">
+        <pre class="code" id="code" aria-label="Python source code"></pre>
+      </div>
+    </section>
+
+    <aside class="inspector">
+      <section class="panel step-panel" aria-live="polite">
+        <div class="step-meta">
+          <span class="phase-badge" id="phase-badge" data-phase="entry">Entry</span>
+          <span class="step-count" id="step-count"></span>
+        </div>
+        <h2 id="step-title"></h2>
+        <p id="step-description"></p>
+        <div class="note" id="step-note" hidden></div>
+      </section>
+
+      <section class="panel mini-panel" aria-label="Call stack">
+        <h3>Call stack</h3>
+        <ol class="stack" id="stack"></ol>
+      </section>
+
+      <section class="panel mini-panel" aria-label="Variables">
+        <div class="panel-title-row">
+          <h3>Variables</h3>
+          <span class="legend"><i class="swatch swatch-changed"></i>updated this step</span>
+        </div>
+        <dl class="vars" id="vars"></dl>
+        <p class="empty" id="vars-empty" hidden>No tracked variables in scope yet.</p>
+      </section>
+
+      <section class="panel terminal-panel" aria-label="Terminal output">
+        <div class="panel-title-row">
+          <h3>Terminal <span class="live-dot" aria-hidden="true"></span></h3>
+          <span class="terminal-note">simulated input &amp; output</span>
+        </div>
+        <div class="terminal" id="terminal" aria-live="polite"></div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="controls" role="group" aria-label="Playback controls">
+    <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="controls-inner">
+      <div class="button-group">
+        <button type="button" id="restart" class="btn icon-btn" title="Restart (R)" aria-label="Restart">&#8635;</button>
+        <button type="button" id="prev" class="btn" title="Previous step (Left arrow)">&larr; Prev</button>
+        <button type="button" id="play" class="btn play-btn" title="Play or pause (Space)" aria-pressed="false">&#9654; Play</button>
+        <button type="button" id="next" class="btn" title="Next step (Right arrow)">Next &rarr;</button>
+      </div>
+
+      <label class="speed">Speed
+        <select id="speed">
+          <option value="0.5">0.5&times;</option>
+          <option value="1" selected>1&times;</option>
+          <option value="1.5">1.5&times;</option>
+          <option value="2">2&times;</option>
+        </select>
+      </label>
+
+      <input type="range" id="scrub" class="scrub" min="0" max="0" value="0" step="1" aria-label="Jump to a step">
+
+      <span class="hint"><kbd>Space</kbd> play <kbd>&larr;</kbd><kbd>&rarr;</kbd> step <kbd>R</kbd> restart</span>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="walkthrough.js"></script>
+</body>
+</html>
