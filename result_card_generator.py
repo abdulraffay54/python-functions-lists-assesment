@@ -4,8 +4,8 @@ Task 1: Student Result Card Generator
 This program collects one student's name, roll number, and marks in five
 subjects. It validates the inputs and prints a simple result card.
 
-A student fails if the overall percentage is below 50 OR if any individual
-subject mark is below 40.
+A student fails if any individual subject mark is below 40. The letter grade
+is calculated separately from the overall percentage.
 """
 
 # Five subjects used by the result card.
@@ -13,7 +13,6 @@ SUBJECTS = ["Mathematics", "English", "Physics", "Chemistry", "Computer Science"
 
 MAX_MARK_PER_SUBJECT = 100
 SUBJECT_PASS_MARK = 40
-OVERALL_PASS_PERCENTAGE = 50
 
 
 def format_name(name):
@@ -93,9 +92,8 @@ def main():
     percentage = calculate_percentage(total_marks, max_total)
     grade = get_grade(percentage)
 
-    # Any failed subject or overall score below 50 forces a Fail.
-    if failed_subjects or percentage < OVERALL_PASS_PERCENTAGE:
-        grade = "Fail"
+    # Any failed subject forces a Fail.
+    if failed_subjects:
         result = "Fail"
     else:
         result = "Pass"
