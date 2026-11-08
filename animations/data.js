@@ -15,8 +15,8 @@ Task 1: Student Result Card Generator
 This program collects one student's name, roll number, and marks in five
 subjects. It validates the inputs and prints a simple result card.
 
-A student fails if the overall percentage is below 50 OR if any individual
-subject mark is below 40.
+A student fails if any individual subject mark is below 40. The letter grade
+is calculated separately from the overall percentage.
 """
 
 # Five subjects used by the result card.
@@ -24,7 +24,6 @@ SUBJECTS = ["Mathematics", "English", "Physics", "Chemistry", "Computer Science"
 
 MAX_MARK_PER_SUBJECT = 100
 SUBJECT_PASS_MARK = 40
-OVERALL_PASS_PERCENTAGE = 50
 
 
 def format_name(name):
@@ -104,9 +103,8 @@ def main():
     percentage = calculate_percentage(total_marks, max_total)
     grade = get_grade(percentage)
 
-    # Any failed subject or overall score below 50 forces a Fail.
-    if failed_subjects or percentage < OVERALL_PASS_PERCENTAGE:
-        grade = "Fail"
+    # Any failed subject forces a Fail.
+    if failed_subjects:
         result = "Fail"
     else:
         result = "Pass"
@@ -148,13 +146,12 @@ if __name__ == "__main__":
         description:
           "Python loads the file and reaches the __main__ guard. It calls main() inside a try block so Ctrl+C or an unexpected end of input can be handled.",
         focus: "<module>",
-        lines: [127, 128, 129],
+        lines: [125, 126, 127],
         stack: ["<module>"],
         vars: {
           SUBJECTS: "5 subjects",
           MAX_MARK_PER_SUBJECT: 100,
-          SUBJECT_PASS_MARK: 40,
-          OVERALL_PASS_PERCENTAGE: 50
+          SUBJECT_PASS_MARK: 40
         },
         terminal: [{ kind: "command", text: "$ python result_card_generator.py" }],
         duration: 2300
@@ -165,7 +162,7 @@ if __name__ == "__main__":
         description:
           "Execution enters main(). The first statement prints a heading, then the program is ready to collect the student's details.",
         focus: "main()",
-        lines: [62, 64],
+        lines: [61, 63],
         stack: ["<module>", "main()"],
         vars: {
           name: "(not read yet)",
@@ -182,7 +179,7 @@ if __name__ == "__main__":
         description:
           "input() returns raw text. The program immediately passes that text to format_name() instead of storing the messy version.",
         focus: "main()",
-        lines: [67],
+        lines: [66],
         stack: ["<module>", "main()"],
         vars: {
           "raw input": '"  aYESHA khan  "',
@@ -197,7 +194,7 @@ if __name__ == "__main__":
         description:
           "format_name() receives the raw string. .strip() removes the outside spaces, .title() capitalizes each word, and the cleaned value is returned to main().",
         focus: "format_name()",
-        lines: [19, 20, 21, 67],
+        lines: [18, 19, 20, 66],
         stack: ["<module>", "main()", "format_name()"],
         vars: {
           "name (argument)": '"  aYESHA khan  "',
@@ -214,7 +211,7 @@ if __name__ == "__main__":
         description:
           "The while loop tests not name. The cleaned name contains text, so the condition is False and the loop is skipped.",
         focus: "main()",
-        lines: [68],
+        lines: [67],
         stack: ["<module>", "main()"],
         vars: {
           name: '"Ayesha Khan"',
@@ -229,7 +226,7 @@ if __name__ == "__main__":
         description:
           "The loop asks for input until .isdigit() returns True. The value 12345 passes, so break exits the loop without printing an error.",
         focus: "main()",
-        lines: [73, 74, 76, 77],
+        lines: [72, 73, 75, 76],
         stack: ["<module>", "main()"],
         vars: {
           roll_number: '"12345"',
@@ -247,7 +244,7 @@ if __name__ == "__main__":
         description:
           "marks will keep every subject score in order. failed_subjects starts empty and will only receive names of subjects below 40.",
         focus: "main()",
-        lines: [81, 82],
+        lines: [80, 81],
         stack: ["<module>", "main()"],
         vars: {
           marks: "[]",
@@ -262,7 +259,7 @@ if __name__ == "__main__":
         description:
           "main() calls get_valid_marks('Mathematics'). The function checks that 95 is digits, converts it to int, accepts the 0–100 range, and returns it.",
         focus: "get_valid_marks()",
-        lines: [84, 85, 26, 27, 29, 33, 35, 36, 86, 88],
+        lines: [83, 84, 25, 26, 28, 32, 34, 35, 85, 87],
         stack: ["<module>", "main()", "get_valid_marks()"],
         vars: {
           subject: '"Mathematics"',
@@ -284,7 +281,7 @@ if __name__ == "__main__":
         description:
           "The same function runs again for English. 88 is appended to marks, and because 88 is not below 40, failed_subjects is still empty.",
         focus: "get_valid_marks()",
-        lines: [84, 85, 26, 27, 29, 33, 35, 36, 86, 88],
+        lines: [83, 84, 25, 26, 28, 32, 34, 35, 85, 87],
         stack: ["<module>", "main()", "get_valid_marks()"],
         vars: {
           subject: '"English"',
@@ -304,7 +301,7 @@ if __name__ == "__main__":
         description:
           "Physics scores 92. The loop body appends the mark and performs the below-40 check before moving to the next subject.",
         focus: "get_valid_marks()",
-        lines: [84, 85, 26, 27, 29, 33, 35, 36, 86, 88],
+        lines: [83, 84, 25, 26, 28, 32, 34, 35, 85, 87],
         stack: ["<module>", "main()", "get_valid_marks()"],
         vars: {
           subject: '"Physics"',
@@ -324,7 +321,7 @@ if __name__ == "__main__":
         description:
           "Chemistry scores 90. All validation rules pass again, so the function returns the integer and main() stores it.",
         focus: "get_valid_marks()",
-        lines: [84, 85, 26, 27, 29, 33, 35, 36, 86, 88],
+        lines: [83, 84, 25, 26, 28, 32, 34, 35, 85, 87],
         stack: ["<module>", "main()", "get_valid_marks()"],
         vars: {
           subject: '"Chemistry"',
@@ -344,7 +341,7 @@ if __name__ == "__main__":
         description:
           "The final mark is 85. The loop finishes all five subjects, and no subject has triggered the below-40 condition.",
         focus: "get_valid_marks()",
-        lines: [84, 85, 26, 27, 29, 33, 35, 36, 86, 88],
+        lines: [83, 84, 25, 26, 28, 32, 34, 35, 85, 87],
         stack: ["<module>", "main()", "get_valid_marks()"],
         vars: {
           subject: '"Computer Science"',
@@ -364,7 +361,7 @@ if __name__ == "__main__":
         description:
           "The for loop has finished. marks contains five integers in subject order, and failed_subjects is still empty because every score is at least 40.",
         focus: "main()",
-        lines: [84],
+        lines: [83],
         stack: ["<module>", "main()"],
         vars: {
           marks: "[95, 88, 92, 90, 85]",
@@ -380,7 +377,7 @@ if __name__ == "__main__":
         description:
           "sum(marks) adds the five scores to get 450. len(SUBJECTS) * MAX_MARK_PER_SUBJECT gives the maximum possible total of 500.",
         focus: "main()",
-        lines: [91, 92],
+        lines: [90, 91],
         stack: ["<module>", "main()"],
         vars: {
           marks: "[95, 88, 92, 90, 85]",
@@ -396,7 +393,7 @@ if __name__ == "__main__":
         description:
           "main() passes total_marks and max_total into the function. The function returns (450 / 500) * 100, which is 90.0.",
         focus: "calculate_percentage()",
-        lines: [93, 41, 42, 43],
+        lines: [92, 40, 41, 42],
         stack: ["<module>", "main()", "calculate_percentage()"],
         vars: {
           total: 450,
@@ -414,7 +411,7 @@ if __name__ == "__main__":
         description:
           "The if / elif chain checks the percentage from top to bottom. 90.0 matches the first condition, so the function returns 'A+'.",
         focus: "get_grade()",
-        lines: [94, 46, 48, 49],
+        lines: [93, 45, 47, 48],
         stack: ["<module>", "main()", "get_grade()"],
         vars: {
           percentage: 90.0,
@@ -426,22 +423,22 @@ if __name__ == "__main__":
       },
       {
         phase: "decision",
-        title: "Apply the final Fail rule",
+        title: "Apply the failed-subject rule",
         description:
-          "The decision checks two things: whether any subject failed, and whether the percentage is below 50. Both are False, so result becomes 'Pass'.",
+          "The decision now checks only whether any subject failed. failed_subjects is empty, so the else branch sets result to 'Pass'. The grade is not changed here.",
         focus: "main()",
-        lines: [96, 97, 98, 99, 100, 101],
+        lines: [95, 96, 97, 98, 99],
         stack: ["<module>", "main()"],
         vars: {
           failed_subjects: "[]",
           percentage: 90.0,
-          "failed_subjects or percentage < 50": "False or False → False",
+          "bool(failed_subjects)": "False",
           grade: '"A+"',
           result: '"Pass"'
         },
         terminal: [],
         note:
-          "If Chemistry had been below 40, this branch would force both grade and result to 'Fail'.",
+          "If Chemistry had been below 40, result would be 'Fail' while the grade would stay 'A', because get_grade() only looks at the percentage.",
         duration: 2600
       },
       {
@@ -450,7 +447,7 @@ if __name__ == "__main__":
         description:
           "The program prints the card borders, student details, and table heading. f-strings control spacing and alignment.",
         focus: "main()",
-        lines: [103, 104, 105, 106, 107, 108, 109, 110],
+        lines: [101, 102, 103, 104, 105, 106, 107, 108],
         stack: ["<module>", "main()"],
         vars: {
           name: '"Ayesha Khan"',
@@ -473,7 +470,7 @@ if __name__ == "__main__":
         description:
           "zip(SUBJECTS, marks) pairs each subject with its score. The loop prints one aligned row for each pair.",
         focus: "main()",
-        lines: [112, 113],
+        lines: [110, 111],
         stack: ["<module>", "main()"],
         vars: {
           "zip pairs": "5 subject-mark pairs",
@@ -494,7 +491,7 @@ if __name__ == "__main__":
         description:
           "The final rows show total marks, percentage to two decimal places, the letter grade, and the final Pass/Fail result.",
         focus: "main()",
-        lines: [115, 116, 117, 118, 119],
+        lines: [113, 114, 115, 116, 117],
         stack: ["<module>", "main()"],
         vars: {
           total_marks: 450,
@@ -518,7 +515,7 @@ if __name__ == "__main__":
         description:
           "failed_subjects is empty, so the failure-note block is skipped. The closing border prints, main() returns, and the program ends.",
         focus: "main()",
-        lines: [121, 122, 124],
+        lines: [119, 120, 122],
         stack: ["<module>", "main()"],
         vars: {
           failed_subjects: "[]",
