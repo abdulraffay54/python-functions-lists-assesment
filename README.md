@@ -54,9 +54,9 @@ subjects: Mathematics, English, Physics, Chemistry, and Computer Science.
 - Validates the roll number with `.isdigit()` so it can contain digits only.
 - Validates every subject mark and only accepts whole numbers from 0 to 100.
 - Calculates total marks and overall percentage.
-- Calculates the letter grade using the assessment grading table.
-- Forces both the grade and final result to **Fail** if any subject mark is
-  below 40, even when the overall percentage is high enough to pass.
+- Calculates the letter grade from the overall percentage.
+- Sets the final result to **Fail** if any subject mark is below 40. The letter
+  grade is not changed by this rule.
 - Displays a formatted result card using f-strings.
 
 ### Grading Criteria
@@ -267,7 +267,8 @@ Result       : Pass
 ### Sample 2: Subject Below 40 Forces a Fail
 
 This student has an overall percentage of 80.00%, but Chemistry is below 40, so
-both the grade and the final result must be Fail.
+the final result is Fail. The letter grade remains the grade for the overall
+percentage.
 
 **Input:**
 
@@ -287,7 +288,7 @@ Enter marks for Computer Science (0-100): 90
 --------------------------------------------------
 Total Marks  : 400/500
 Percentage   : 80.00%
-Grade        : Fail
+Grade        : A
 Result       : Fail
 Failed Subject(s): Chemistry
 ==================================================
@@ -351,7 +352,7 @@ Both programs were tested with normal, boundary, and invalid inputs:
 | Non-numeric marks (`abc`) | Re-asks for input | Passed |
 | Marks below 0 or above 100 | Re-asks for input | Passed |
 | Decimal marks (for example `49.5`) | Rejected because marks must be whole numbers | Passed |
-| One subject below 40 but high percentage | Final status is Fail | Passed |
+| One subject below 40 but high percentage | Result is Fail, letter grade follows percentage | Passed |
 | Percentage exactly 50 | Grade D and Pass | Passed |
 | Percentage exactly 90 | Grade A+ | Passed |
 | Tied highest and lowest marks | All matching students displayed | Passed |
