@@ -1,7 +1,7 @@
 flowchart TD
     START(["Start<br/>python result_card_generator.py"]) --> MAIN["main()"]
 
-    CONFIG["Globals<br/>SUBJECTS = 5 subjects<br/>MAX_MARK_PER_SUBJECT = 100<br/>SUBJECT_PASS_MARK = 40<br/>OVERALL_PASS_PERCENTAGE = 50"]
+    CONFIG["Globals<br/>SUBJECTS = 5 subjects<br/>MAX_MARK_PER_SUBJECT = 100<br/>SUBJECT_PASS_MARK = 40"]
 
     subgraph INPUT["Input and validation"]
         direction TB
@@ -14,8 +14,8 @@ flowchart TD
     subgraph CALC["Calculation and decision logic"]
         direction TB
         PERCENT["calculate_percentage(total_marks, max_total)"]
-        GRADE["get_grade(percentage)"]
-        RULE{"failed subject?<br/>or percentage below 50?"}
+        GRADE["get_grade(percentage)<br/>letter grade from percentage"]
+        RULE{"any subject<br/>below 40?"}
     end
 
     subgraph OUTPUT["Presentation"]
@@ -26,7 +26,6 @@ flowchart TD
 
     CONFIG -.->|"subject list and pass mark"| MARKS
     CONFIG -.->|"max_total"| PERCENT
-    CONFIG -.->|"overall pass percentage"| RULE
 
     MAIN -->|"raw name"| NAME
     NAME -->|"raw name"| FORMAT
@@ -48,8 +47,8 @@ flowchart TD
     MAIN -->|"percentage"| GRADE
     GRADE -->|"letter grade"| MAIN
 
-    MAIN -->|"failed_subjects, percentage"| RULE
-    RULE -->|"yes: grade = Fail, result = Fail"| CARD
+    MAIN -->|"failed_subjects"| RULE
+    RULE -->|"yes: result = Fail"| CARD
     RULE -->|"no: result = Pass"| CARD
 
     MAIN -->|"name, roll_number, SUBJECTS, marks,<br/>total_marks, percentage, grade, result"| CARD
